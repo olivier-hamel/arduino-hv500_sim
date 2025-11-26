@@ -24,7 +24,7 @@ SerialInterface serialUI(hv500, motors, 115200);
 uint32_t lastTelemetry  = 0;
 uint32_t lastSimulation = 0;
 
-void sendAllTelemtry();
+void sendAllTelemetry();
 void dispatchCommand(const Hv500CanNode::Command& cmd);
 
 void setup() {
@@ -47,7 +47,7 @@ void loop() {
 
     // 2. Send telemtry periodically
     if (now - lastTelemetry >= TELEMETRY_PERIOD_MS) {
-        sendAllTelemtry();
+        sendAllTelemetry();
         lastTelemetry = now;
     }
 
@@ -62,6 +62,7 @@ void loop() {
     // 4. Handle serial menu input
     serialUI.update();   
 }
+
 
 void sendAllTelemetry() {
   for (uint8_t i = 0; i < SerialInterface::MOTOR_COUNT; ++i) {
