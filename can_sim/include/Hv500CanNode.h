@@ -10,7 +10,7 @@ public:
     static constexpr uint8_t NODE_FL  = 10;
     static constexpr uint8_t NODE_FR  = 11;
     static constexpr uint8_t NODE_RL  = 13;
-    static constexpr uint8_t NODE_RR  = 13;
+    static constexpr uint8_t NODE_RR  = 14;
     static constexpr uint8_t NODE_MIN = NODE_FL;
     static constexpr uint8_t NODE_MAX = NODE_RR;
 

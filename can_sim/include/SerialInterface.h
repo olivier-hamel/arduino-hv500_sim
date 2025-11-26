@@ -2,17 +2,38 @@
 
 #include <Arduino.h>
 #include <Hv500CanNode.h>
+#include <MotorSimulator.h>
 
 class SerialInterface
 {
     
 public:
-    SerialInterface(Hv500CanNode& hv500, uint16_t speed);
+    static constexpr uint8_t MOTOR_COUNT = 4;
 
-    void printHelloWorld();
-    void showMainMenu(); // Show basic status. Two choice : (1 - Write a command) (2 - Read incomming can data)
-    
+    SerialInterface(Hv500CanNode& hv500, MotorSimulator* motors[MOTOR_COUNT], uint32_t baud = 115200);
+
+    void begin();
+    void update();
+    void logCommand(const Hv500CanNode::Command& cmd);
 
 private :
-    Hv500CanNode hv500_;
+    enum class MenuState {
+        Main, 
+        Status,
+        InjectFault,
+        ClearFault
+    };
+
+    void printMainMenu();
+    void printMotorStatus();
+    void handleInput(char c);
+
+    HardwareSerial& serial_ = Serial;
+    Hv500CanNode& hv500_;
+    MotorSimulator** motors_;
+    uint32_t baud_;
+
+    MenuState state_ = MenuState::Main;
+    uint32_t lastStatusPrint_ = 0;
+    static constexpr uint32_t STATUS_INTERVAL_MS = 500;
 };
