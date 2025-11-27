@@ -22,6 +22,10 @@ void SerialInterface::begin() {
     {
         // wait for connection
     }
+
+    serial_.println("Starting...");
+    delay(2000);
+
     
     if (!hv500_.begin(CAN_500KBPS, MCP_16MHZ))
     {
@@ -30,7 +34,6 @@ void SerialInterface::begin() {
         {
             // No need to go further
         }
-        
     }
     
     serial_.println("Hv500 Motor simulator ready");
