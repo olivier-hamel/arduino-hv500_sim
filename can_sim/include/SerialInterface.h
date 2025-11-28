@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <Hv500CanNode.h>
 #include <MotorSimulator.h>
+#include <Throttle.h>
 
 class SerialInterface
 {
@@ -10,7 +11,7 @@ class SerialInterface
 public:
     static constexpr uint8_t MOTOR_COUNT = 4;
 
-    SerialInterface(Hv500CanNode& hv500, MotorSimulator* motors[MOTOR_COUNT], uint32_t baud = 115200);
+    SerialInterface(Hv500CanNode& hv500, MotorSimulator* motors[MOTOR_COUNT], Throttle& throttle, uint32_t baud = 115200);
 
     void begin();
     void update();
@@ -30,6 +31,7 @@ private :
 
     HardwareSerial& serial_ = Serial;
     Hv500CanNode& hv500_;
+    Throttle& throttle_;
     MotorSimulator** motors_;
     uint32_t baud_;
 

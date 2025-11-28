@@ -13,8 +13,8 @@ const char* nodeLabel(uint8_t node) {
 }
 } // namespace
 
-SerialInterface::SerialInterface(Hv500CanNode& hv500, MotorSimulator* motors[MOTOR_COUNT], uint32_t baud) :
-    hv500_(hv500), motors_(motors), baud_(baud) {}
+SerialInterface::SerialInterface(Hv500CanNode& hv500, MotorSimulator* motors[MOTOR_COUNT], Throttle& throttle, uint32_t baud) :
+    hv500_(hv500), motors_(motors), throttle_(throttle), baud_(baud) {}
 
 void SerialInterface::begin() {
     serial_.begin(baud_);
@@ -112,7 +112,10 @@ void SerialInterface::printMotorStatus() {
         MotorSimulator* m = motors_[i];
         serial_.println("-------");
         serial_.print("MOTOR : ");
-        serial_.println(nodeLabel(m->node()));
+        serial_.print(nodeLabel(m->node()));
+        serial_.print(" Input Throttle= ");
+        serial_.print(throttle_.read());
+        serial_.println("%");
 
         serial_.print(nodeLabel(m->node()));
         serial_.print(" : en= ");

@@ -2,11 +2,13 @@
 
 #include <Hv500CanNode.h>
 #include <MotorSimulator.h>
+#include <Throttle.h>
 #include <SerialInterface.h>
 
 
 // -- Config --
 constexpr uint8_t CAN_CS_PIN = 10;
+constexpr uint8_t THROTTLE_PIN = A0;
 constexpr uint32_t TELEMETRY_PERIOD_MS = 100;
 constexpr uint16_t SIMULATION_PERIOD_MS = 10;
 
@@ -17,9 +19,11 @@ MotorSimulator motorFR(Hv500CanNode::NODE_FR);
 MotorSimulator motorRL(Hv500CanNode::NODE_RL);
 MotorSimulator motorRR(Hv500CanNode::NODE_RR);
 
+Throttle throttle(THROTTLE_PIN);
+
 MotorSimulator* motors[SerialInterface::MOTOR_COUNT] = {&motorFL, &motorFR, &motorRL, &motorRR};
 
-SerialInterface serialUI(hv500, motors, 115200);
+SerialInterface serialUI(hv500, motors, throttle, 115200);
 
 uint32_t lastTelemetry  = 0;
 uint32_t lastSimulation = 0;
